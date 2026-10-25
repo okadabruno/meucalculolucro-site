@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Meu Cálculo Lucro ajuda vendedores do Mercado Livre a estimar lucro, margem e preço de venda considerando custos, despesas e tarifas.">
+  <meta name="theme-color" content="#101827">
+  <title>Meu Cálculo Lucro | Rentabilidade por venda</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #101827;
+      --ink-2: #243247;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --paper: #ffffff;
+      --bg: #f6f8fb;
+      --green: #13845b;
+      --green-dark: #08734d;
+      --green-soft: #eaf8f1;
+      --blue-soft: #eef4ff;
+      --amber: #f4b740;
+      --shadow: 0 20px 55px rgba(16, 24, 39, .08);
+      --max: 1160px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; line-height: 1.6; }
+    a { color: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    header { background: rgba(255,255,255,.94); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 850; letter-spacing: -.6px; font-size: 19px; white-space: nowrap; }
+    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; color: white; background: linear-gradient(145deg, #16a36c, #08734d); box-shadow: 0 7px 18px rgba(19,132,91,.25); }
+    .brand-word { color: var(--ink); }
+    .brand-word span { color: var(--green); }
+    .navlinks { display: flex; align-items: center; gap: 25px; color: var(--muted); font-size: 14px; font-weight: 650; }
+    .navlinks a { text-decoration: none; }
+    .navlinks a:hover { color: var(--green); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 48px; border-radius: 12px; padding: 12px 20px; text-decoration: none; border: 1px solid transparent; background: var(--green); color: #fff; font-weight: 800; font-size: 15px; cursor: pointer; transition: transform .15s ease, background .15s ease, box-shadow .15s ease; }
+    .btn:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(19,132,91,.18); }
+    .btn.secondary { color: var(--ink); background: white; border-color: #cbd5e1; }
+    .btn.secondary:hover { background: #f8fafc; box-shadow: none; }
+    .nav-cta { min-height: 42px; padding: 10px 16px; font-size: 14px; }
+    .hero { padding: 74px 0 68px; background: radial-gradient(ellipse at 80% 20%, #e1f8ec 0, transparent 34%), linear-gradient(180deg, #fff 0%, #f7fafc 100%); border-bottom: 1px solid var(--line); overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.04fr .96fr; align-items: center; gap: 54px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #ccebd9; background: var(--green-soft); color: var(--green-dark); padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 20px; }
+    h1 { font-size: clamp(40px, 5.2vw, 64px); line-height: 1.02; letter-spacing: -2.8px; margin: 0 0 22px; max-width: 680px; }
+    h1 .highlight { color: var(--green); }
+    .hero-copy { color: var(--muted); font-size: 18px; max-width: 600px; margin: 0 0 27px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 23px; }
+    .microproof { display: flex; flex-wrap: wrap; gap: 13px 20px; color: #526174; font-size: 13px; font-weight: 650; }
+    .microproof span { display: inline-flex; align-items: center; gap: 7px; }
+    .check { color: var(--green); font-weight: 900; }
+    .preview { border-radius: 24px; padding: 18px; background: #fff; border: 1px solid #dce5ed; box-shadow: var(--shadow); transform: rotate(.6deg); }
+    .preview-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 5px 18px; }
+    .preview-label { font-weight: 850; letter-spacing: -.4px; }
+    .status { color: var(--green-dark); background: var(--green-soft); border-radius: 999px; padding: 5px 9px; font-size: 11px; font-weight: 850; }
+    .preview-product { font-size: 13px; color: var(--muted); margin: 0 5px 12px; }
+    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .metric { padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: #fff; min-width: 0; }
+    .metric small { display: block; color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+    .metric strong { font-size: clamp(20px, 2vw, 27px); letter-spacing: -.7px; display: block; line-height: 1.2; }
+    .metric.main { grid-column: span 2; background: linear-gradient(135deg, #effaf4, #fff); border-color: #c9ead8; }
+    .metric.main strong { color: var(--green-dark); font-size: 34px; }
+    .preview-foot { color: var(--muted); font-size: 11px; padding: 13px 5px 1px; }
+    .trustbar { background: #fff; border-bottom: 1px solid var(--line); }
+    .trustrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 22px 0; }
+    .trustitem { display: flex; align-items: center; gap: 12px; color: var(--ink-2); font-weight: 750; font-size: 13px; }
+    .trusticon { display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; background: var(--blue-soft); color: #315ba6; font-size: 18px; }
+    section { padding: 76px 0; }
+    .section-head { max-width: 720px; text-align: center; margin: 0 auto 38px; }
+    .kicker { color: var(--green); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; font-weight: 900; margin-bottom: 10px; }
+    h2 { font-size: clamp(29px, 3.5vw, 42px); line-height: 1.12; letter-spacing: -1.3px; margin: 0 0 13px; }
+    .section-head p { color: var(--muted); margin: 0; font-size: 17px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { padding: 26px; border-radius: 18px; border: 1px solid var(--line); background: var(--paper); box-shadow: 0 4px 14px rgba(16,24,39,.025); }
+    .cardicon { display: grid; place-items: center; width: 45px; height: 45px; background: var(--green-soft); color: var(--green-dark); border-radius: 14px; margin-bottom: 18px; font-size: 21px; }
+    .card h3 { margin: 0 0 9px; font-size: 18px; letter-spacing: -.35px; }
+    .card p { color: var(--muted); margin: 0; font-size: 14px; }
+    .how { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; counter-reset: step; }
+    .step { position: relative; padding-top: 8px; }
+    .step-number { display: grid; place-items: center; width: 38px; height: 38px; color: var(--green-dark); background: var(--green-soft); border: 1px solid #ccebd9; font-weight: 900; border-radius: 12px; margin-bottom: 15px; }
+    .step h3 { margin: 0 0 8px; font-size: 18px; }
+    .step p { margin: 0; color: var(--muted); font-size: 14px; }
+    .marketbox { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 28px; padding: 28px 32px; background: #102034; color: #fff; border-radius: 22px; }
+    .marketbox h2 { font-size: 28px; margin-bottom: 9px; }
+    .marketbox p { color: #cbd5e1; margin: 0; max-width: 700px; font-size: 14px; }
+    .marketbox .btn { background: #fff; color: var(--ink); white-space: nowrap; }
+    .marketbox .btn:hover { background: #eef2f7; }
+    .transparency { background: #f0f7f4; border-top: 1px solid #d8ece1; border-bottom: 1px solid #d8ece1; }
+    .transparency-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+    .transparency h2 { font-size: 32px; }
+    .transparency p { color: #526174; }
+    .notice-list { display: grid; gap: 12px; }
+    .notice { display: flex; gap: 12px; background: #fff; border: 1px solid #d8ece1; border-radius: 14px; padding: 15px; font-size: 14px; color: var(--ink-2); }
+    .notice strong { display: block; margin-bottom: 2px; }
+    .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    details { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+    summary { font-weight: 800; cursor: pointer; }
+    details p { font-size: 14px; color: var(--muted); margin: 12px 0 0; }
+    .closing { text-align: center; padding: 76px 0; background: linear-gradient(180deg, #fff, #edf8f2); }
+    .closing p { max-width: 620px; color: var(--muted); font-size: 17px; margin: 0 auto 24px; }
+    footer { padding: 28px 0; background: #101827; color: #cbd5e1; font-size: 13px; }
+    .footerrow { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+    .footerrow strong { color: white; }
+    .footlinks { display: flex; gap: 18px; flex-wrap: wrap; }
+    footer a { color: #e2e8f0; text-decoration: none; }
+    .disclaimer { margin-top: 15px; color: #9ca9ba; font-size: 11px; max-width: 900px; }
+    @media (max-width: 900px) {
+      .navlinks { display: none; }
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .preview { max-width: 610px; width: 100%; margin: 0 auto; transform: none; }
+      .trustrow { grid-template-columns: 1fr; gap: 13px; }
+      .cards, .steps { grid-template-columns: 1fr; }
+      .transparency-grid { grid-template-columns: 1fr; }
+      .marketbox { grid-template-columns: 1fr; }
+      .marketbox .btn { justify-self: start; }
+      .faq { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .wrap { width: min(var(--max), calc(100% - 28px)); }
+      .nav { min-height: 66px; }
+      .brand { font-size: 16px; }
+      .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+      .nav-cta { min-height: 38px; padding: 8px 11px; font-size: 12px; }
+      .hero { padding: 50px 0 45px; }
+      h1 { font-size: 43px; letter-spacing: -1.9px; }
+      .hero-copy { font-size: 16px; }
+      .hero-actions .btn { width: 100%; }
+      section { padding: 55px 0; }
+      .metric-grid { gap: 8px; }
+      .metric { padding: 12px; }
+      .metric strong { font-size: 21px; }
+      .metric.main strong { font-size: 29px; }
+      .marketbox { padding: 23px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#inicio" aria-label="Meu Cálculo Lucro, início">
+        <span class="brand-mark" aria-hidden="true">M$</span>
+        <span class="brand-word">Meu Cálculo <span>Lucro</span></span>
+      </a>
+      <nav class="navlinks" aria-label="Navegação principal">
+        <a href="#recursos">Recursos</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#transparencia">Transparência</a>
+        <a href="#duvidas">Dúvidas</a>
+      </nav>
+      <a class="btn nav-cta" href="https://script.google.com/macros/s/AKfycbwBayeB4qLuxcYnueSxXZAxPHGEBUJaFFpqgzjs0SEUJxZTM9pC7LfemTu-p15ztlQq/exec?acao=app" target="_blank" rel="noopener">Abrir calculadora <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow"><span aria-hidden="true">●</span> Ferramenta de apoio a vendedores</div>
+          <h1>Entenda quanto sobra <span class="highlight">em cada venda.</span></h1>
+          <p class="hero-copy">Analise preço, custos, tarifas e frete para ter uma visão mais clara do lucro e da margem antes de tomar decisões de venda.</p>
+          <div class="hero-actions">
+            <a class="btn" href="https://script.google.com/macros/s/AKfycbwBayeB4qLuxcYnueSxXZAxPHGEBUJaFFpqgzjs0SEUJxZTM9pC7LfemTu-p15ztlQq/exec?acao=app" target="_blank" rel="noopener">Abrir a calculadora <span aria-hidden="true">↗</span></a>
+            <a class="btn secondary" href="#como-funciona">Ver como funciona</a>
+          </div>
+          <div class="microproof">
+            <span><b class="check">✓</b> Lucro e margem por venda</span>
+            <span><b class="check">✓</b> Metas e cenários</span>
+            <span><b class="check">✓</b> Catálogo de produtos</span>
+          </div>
+        </div>
+        <div class="preview" aria-label="Exemplo ilustrativo de um resultado da calculadora">
+          <div class="preview-top"><span class="preview-label">Resumo ilustrativo</span><span class="status">EXEMPLO</span></div>
+          <p class="preview-product">Exemplo demonstrativo — não representa uma consulta real de tarifas.</p>
+          <div class="metric-grid">
+            <div class="metric"><small>Preço de venda</small><strong>R$ 100,00</strong></div>
+            <div class="metric"><small>Custos considerados</small><strong>R$ 76,50</strong></div>
+            <div class="metric main"><small>Lucro estimado por venda</small><strong>R$ 23,50</strong></div>
+            <div class="metric"><small>Margem estimada</small><strong>23,50%</strong></div>
+            <div class="metric"><small>Preço de equilíbrio</small><strong>R$ 79,00</strong></div>
+          </div>
+          <div class="preview-foot">Valores ilustrativos. O resultado real depende da categoria, tarifas consultadas e dos custos informados.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="trustbar">
+      <div class="wrap trustrow">
+        <div class="trustitem"><span class="trusticon" aria-hidden="true">⌁</span><span>Análise de custos e tarifas em um só lugar</span></div>
+        <div class="trustitem"><span class="trusticon" aria-hidden="true">↗</span><span>Simulação de preço, custo e volume</span></div>
+        <div class="trustitem"><span class="trusticon" aria-hidden="true">◎</span><span>Metas e acompanhamento do catálogo</span></div>
+      </div>
+    </div>
+
+    <section id="recursos">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Recursos</div>
+          <h2>Mais clareza para decidir o preço de venda</h2>
+          <p>Organize as informações importantes para entender a rentabilidade estimada de cada produto.</p>
+        </div>
+        <div class="cards">
+          <article class="card"><div class="cardicon" aria-hidden="true">∑</div><h3>Lucro e margem</h3><p>Considere preço de venda, custo do produto, frete, impostos e outras despesas para visualizar lucro e margem estimados.</p></article>
+          <article class="card"><div class="cardicon" aria-hidden="true">↗</div><h3>Preço de equilíbrio e meta</h3><p>Veja referências de preço para evitar prejuízo e para buscar a meta de lucro configurada, conforme os dados disponíveis.</p></article>
+          <article class="card"><div class="cardicon" aria-hidden="true">⌁</div><h3>Consulta de tarifas</h3><p>Na integração com o Mercado Livre, a comissão e a tarifa fixa podem ser consultadas quando a consulta oficial é concluída com sucesso.</p></article>
+          <article class="card"><div class="cardicon" aria-hidden="true">◇</div><h3>Simulador de cenários</h3><p>Teste mudanças de preço, custo, comissão e volume sem alterar o cálculo principal do produto.</p></article>
+          <article class="card"><div class="cardicon" aria-hidden="true">▤</div><h3>Catálogo organizado</h3><p>Salve os produtos analisados, consulte resultados e exporte o catálogo para manter seus dados organizados.</p></article>
+          <article class="card"><div class="cardicon" aria-hidden="true">◎</div><h3>Metas de vendas</h3><p>Projete o volume de vendas necessário para buscar uma meta mensal com base no lucro estimado por produto.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" id="como-funciona">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Como funciona</div>
+          <h2>Três passos para analisar um produto</h2>
+          <p>Use a calculadora como apoio à decisão e confira os dados antes de definir seu preço.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><div class="step-number">1</div><h3>Informe o produto</h3><p>Escolha a categoria adequada no Mercado Livre e informe o preço, o custo de aquisição e as despesas que se aplicam à sua operação.</p></article>
+          <article class="step"><div class="step-number">2</div><h3>Consulte e confira</h3><p>Aguarde a consulta das tarifas quando disponível. Confira se a categoria corresponde ao produto e se as taxas foram confirmadas oficialmente.</p></article>
+          <article class="step"><div class="step-number">3</div><h3>Analise o resultado</h3><p>Use lucro, margem, preço de equilíbrio e cenários para apoiar sua decisão. O resultado não substitui a conferência das condições reais da venda.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="marketbox">
+          <div><h2>Comece pela sua operação no Mercado Livre</h2><p>A integração ativa nesta versão é com o Mercado Livre. Integrações com outros marketplaces ainda não estão disponíveis; sua viabilidade será avaliada futuramente.</p></div>
+          <a class="btn" href="https://script.google.com/macros/s/AKfycbwBayeB4qLuxcYnueSxXZAxPHGEBUJaFFpqgzjs0SEUJxZTM9pC7LfemTu-p15ztlQq/exec?acao=app" target="_blank" rel="noopener">Abrir calculadora <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="transparency" id="transparencia">
+      <div class="wrap transparency-grid">
+        <div><div class="kicker">Transparência</div><h2>Uma estimativa é tão boa quanto os dados usados.</h2><p>A calculadora ajuda a organizar números e avaliar cenários. Ela não garante rentabilidade nem substitui a conferência dos valores cobrados pelo marketplace e dos impostos aplicáveis à sua atividade.</p></div>
+        <div class="notice-list">
+          <div class="notice"><span class="check" aria-hidden="true">✓</span><div><strong>Tarifas oficiais</strong> A comissão e a tarifa fixa do Mercado Livre só são tratadas como oficiais após uma consulta bem-sucedida.</div></div>
+          <div class="notice"><span class="check" aria-hidden="true">✓</span><div><strong>Custos informados por você</strong> Impostos, frete e outras despesas precisam refletir a sua operação real.</div></div>
+          <div class="notice"><span class="check" aria-hidden="true">✓</span><div><strong>Categoria correta importa</strong> Confira se a categoria selecionada corresponde ao produto anunciado.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="duvidas">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">Dúvidas frequentes</div><h2>Antes de usar</h2></div>
+        <div class="faq">
+          <details><summary>A calculadora garante que terei esse lucro?</summary><p>Não. Os valores são estimativas calculadas a partir dos dados informados e das tarifas disponíveis. Tarifas, impostos, frete, devoluções e outras despesas podem alterar o resultado real.</p></details>
+          <details><summary>As tarifas são sempre oficiais?</summary><p>Não. A comissão e a tarifa fixa só são indicadas como oficiais após uma consulta bem-sucedida. Se não houver consulta válida, confira o aviso de estimativa exibido na aplicação.</p></details>
+          <details><summary>Preciso informar meus impostos e meu frete?</summary><p>Sim. Esses valores dependem da sua operação. Informe os valores adequados ou zero quando uma despesa realmente não existir.</p></details>
+          <details><summary>A calculadora já funciona com Amazon e Shopee?</summary><p>Não nesta versão. A integração ativa é com o Mercado Livre. Outros marketplaces poderão ser avaliados futuramente.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap">
+        <div class="kicker">Meu Cálculo Lucro</div>
+        <h2>Analise os números antes de decidir.</h2>
+        <p>Abra a calculadora, confira seus custos e use as estimativas como apoio para avaliar a rentabilidade dos produtos.</p>
+        <a class="btn" href="https://script.google.com/macros/s/AKfycbwBayeB4qLuxcYnueSxXZAxPHGEBUJaFFpqgzjs0SEUJxZTM9pC7LfemTu-p15ztlQq/exec?acao=app" target="_blank" rel="noopener">Acessar a calculadora <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div class="footerrow"><div><strong>Meu Cálculo Lucro</strong><br>Ferramenta de apoio à análise de rentabilidade.</div><div class="footlinks"><a href="#recursos">Recursos</a><a href="#transparencia">Transparência</a><a href="mailto:okada.bruno@gmail.com">Contato</a></div></div>
+      <p class="disclaimer">Meu Cálculo Lucro é uma ferramenta independente e não é afiliada, patrocinada ou endossada pelo Mercado Livre. Os resultados são estimativas e devem ser conferidos pelo vendedor antes de decisões comerciais. A política de privacidade e os termos completos da aplicação devem ser revisados antes da abertura pública ampla.</p>
+      <p class="disclaimer">© 2026 Meu Cálculo Lucro.</p>
+    </div>
+  </footer>
+</body>
+</html>
